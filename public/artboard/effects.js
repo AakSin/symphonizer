@@ -1,4 +1,4 @@
-let colors = [
+let fireColor = [
   {
     r: 106,
     g: 4,
@@ -40,20 +40,68 @@ let colors = [
     b: 8,
   },
 ];
+
+let forestColor = [
+  {
+    r: 183,
+    g: 228,
+    b: 199,
+  },
+  {
+    r: 149,
+    g: 213,
+    b: 178,
+  },
+  {
+    r: 116,
+    g: 198,
+    b: 157,
+  },
+  {
+    r: 82,
+    g: 183,
+    b: 136,
+  },
+  {
+    r: 64,
+    g: 145,
+    b: 108,
+  },
+  {
+    r: 45,
+    g: 106,
+    b: 79,
+  },
+  {
+    r: 27,
+    g: 67,
+    b: 50,
+  },
+  {
+    r: 8,
+    g: 28,
+    b: 21,
+  },
+];
 class expandingCirle {
-  constructor() {
+  constructor(colorPallete) {
     this.r = random(100, 200);
     this.state = true;
     this.opacity = 255;
-    this.color = colors[Math.floor(Math.random() * colors.length)];
+    if (colorPallete == "fire") {
+      this.color = fireColor[Math.floor(Math.random() * fireColor.length)];
+    }
+    if (colorPallete == "forest") {
+      this.color = forestColor[Math.floor(Math.random() * forestColor.length)];
+    }
     this.x = random(50, width - 50);
     this.y = random(50, height - 50);
-    this.weight = random(3, 6);
+    // this.weight = random(3, 6);
   }
   play() {
-    strokeWeight(this.weight);
-    stroke(this.color.r, this.color.g, this.color.b, this.opacity);
-    noFill();
+    // strokeWeight(this.weight);
+    fill(this.color.r, this.color.g, this.color.b, this.opacity);
+    noStroke();
     circle(this.x, this.y, this.r);
     this.r += 3;
     this.opacity -= 2;
@@ -64,7 +112,7 @@ class expandingCirle {
 }
 
 class fourCircle {
-  constructor() {
+  constructor(colorPallete) {
     this.d = random(100, 200);
     this.x = random(50, width - 50);
     this.y = random(50, height - 50);
@@ -72,7 +120,12 @@ class fourCircle {
     this.n = random(2, 6);
     this.opacity = 250;
     this.time = 1;
-    this.color = colors[Math.floor(Math.random() * colors.length)];
+    if (colorPallete == "fire") {
+      this.color = fireColor[Math.floor(Math.random() * fireColor.length)];
+    }
+    if (colorPallete == "forest") {
+      this.color = forestColor[Math.floor(Math.random() * forestColor.length)];
+    }
   }
   play() {
     if (this.cnt < this.n) {
@@ -124,51 +177,65 @@ class dynamicBackgroundChange {
   }
 
   play() {
-    if (this.t < 100) {
-      background(0, 40, 0, this.t);
-      this.t = this.t + 10;
+    if (this.cnt < 50) {
+      if (this.t < 100) {
+        background(0, 40, 0, this.t);
+        this.t = this.t + 10;
+      }
+      if (this.t == 100) {
+        background(220);
+        this.t = 0;
+      }
     }
-    if (this.t == 100) {
-      background(220);
-      this.t = 0;
-    }
+    this.cnt++;
   }
 }
 
 class smoothTransition {
-  constructor() {
+  constructor(colorPallete) {
     this.y = 0;
     this.x = 0;
     this.w = window.innerWidth / 8;
     this.h = window.innerHeight;
     this.cnt = 0;
+    if (colorPallete == "fire") {
+      this.color = fireColor[Math.floor(Math.random() * fireColor.length)];
+    }
+    if (colorPallete == "forest") {
+      this.color = forestColor[Math.floor(Math.random() * forestColor.length)];
+    }
   }
 
   play() {
-    background(0);
+    fill(this.color.r, this.color.g, this.color.b);
     rect(this.x, this.y, this.w, this.h);
-    this.w += 20;
+    this.w += 55;
     this.cnt++;
     if (this.cnt > 20) {
-      this.x += 16;
+      this.x += 35;
     }
   }
 }
 
 class expandingPolygon {
-  constructor(n) {
+  constructor(n, colorPallete) {
     this.n = n;
     this.a = random(100, 200);
     this.x = random(50, width - 50);
     this.y = random(50, height - 50);
     this.opacity = 255;
-    this.color = colors[Math.floor(Math.random() * colors.length)];
-    this.weight = random(3, 6);
+    // this.weight = random(3, 6);
+    if (colorPallete == "fire") {
+      this.color = fireColor[Math.floor(Math.random() * fireColor.length)];
+    }
+    if (colorPallete == "forest") {
+      this.color = forestColor[Math.floor(Math.random() * forestColor.length)];
+    }
   }
   play() {
-    strokeWeight(this.weight);
-    stroke(this.color.r, this.color.g, this.color.b, this.opacity);
-    noFill();
+    // strokeWeight(this.weight);
+    fill(this.color.r, this.color.g, this.color.b, this.opacity);
+    noStroke();
     this.regularPolygon(this.x, this.y, this.n, this.a);
     this.a += 2;
     this.opacity -= 2;

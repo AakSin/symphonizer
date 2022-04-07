@@ -6,8 +6,8 @@ socket.on("connect", () => {
   roomId = roomId.substring(1, roomId.length - 1);
   socket.emit("room", roomId);
 });
-let audio;
-let visuals;
+let visuals = "forest";
+let audio = "base";
 socket.on("roomInfo", (data) => {
   audio = data.audio;
   visuals = data.visuals;
@@ -24,7 +24,8 @@ socket.on("role", (role) => {
 sounds = [];
 
 function preload() {
-  for (let i = 0; i < 4; i++) {
+  console.log(audio, visuals);
+  for (let i = 0; i < 5; i++) {
     sounds[i] = loadSound(`assets/sound/normal/${i}.wav`);
   }
 }
@@ -37,7 +38,12 @@ function windowResized() {
 
 let effects = [];
 function draw() {
-  background(3, 7, 30);
+  if (visuals == "fire") {
+    background(3, 7, 30);
+  }
+  if (visuals == "forest") {
+    background(216, 243, 220);
+  }
   for (let i = effects.length - 1; i >= 0; i--) {
     effects[i].play();
     // if (!effects[i].state) {
@@ -46,22 +52,50 @@ function draw() {
   }
 }
 socket.on("keyPressed", (data) => {
-  if (visuals == "base") {
+  switch (data) {
+    case 65:
+      console.log(visuals);
+      effects.push(new expandingCirle(visuals));
+      break;
+    case 66:
+      effects.push(new fourCircle(visuals));
+      break;
+    case 67:
+      effects.push(new expandingPolygon(3, visuals));
+      break;
+    case 68:
+      effects.push(new expandingPolygon(4, visuals));
+      break;
+    case 69:
+      effects.push(new expandingPolygon(5, visuals));
+      break;
+    case 70:
+      effects.push(new fourPararellLines());
+      break;
+    case 71:
+      effects.push(new dynamicBackgroundChange());
+      break;
+    case 72:
+      effects.push(new smoothTransition(visuals));
+      break;
+  }
+
+  if (audio == "base") {
     switch (data) {
       case 65:
-        effects.push(new expandingCirle());
+        sounds[0].play();
         break;
       case 66:
-        effects.push(new fourCircle());
+        sounds[1].play();
         break;
       case 67:
-        effects.push(new expandingPolygon(3));
+        sounds[2].play();
         break;
       case 68:
-        effects.push(new expandingPolygon(4));
+        sounds[3].play();
         break;
       case 69:
-        effects.push(new expandingPolygon(5));
+        sounds[4].play();
         break;
       case 70:
         effects.push(new fourPararellLines());
@@ -72,34 +106,6 @@ socket.on("keyPressed", (data) => {
       case 72:
         effects.push(new smoothTransition());
         break;
-    }
-    if (audio == "base") {
-      switch (data) {
-        case 65:
-          sounds[0].play();
-          break;
-        case 66:
-          sounds[0].play();
-          break;
-        case 67:
-          sounds[1].play();
-          break;
-        case 68:
-          sounds[2].play();
-          break;
-        case 69:
-          sounds[3].play();
-          break;
-        case 70:
-          effects.push(new fourPararellLines());
-          break;
-        case 71:
-          effects.push(new dynamicBackgroundChange());
-          break;
-        case 72:
-          effects.push(new smoothTransition());
-          break;
-      }
     }
   }
 });

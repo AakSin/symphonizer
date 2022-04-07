@@ -15,7 +15,7 @@ let roomCount = 1;
 let roomTracker = {
   0: {
     number: 0,
-    visuals: "base",
+    visuals: "forest",
     audio: "base",
   },
 };
