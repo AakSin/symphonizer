@@ -10,7 +10,7 @@ io = new io.Server(server); // use socket.io on the http app
 app.use("/", express.static("public"));
 app.use("/:roomID", express.static("public/artboard"));
 
-const maxPlayers = 2;
+const maxPlayers = 10;
 let roomCount = 1;
 let roomTracker = {
   0: {
