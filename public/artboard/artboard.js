@@ -23,18 +23,30 @@ window.addEventListener("load", () => {
       audio = e.target.value;
     });
   }
-  document.querySelector(
-    `input[name="visuals"][value=${visuals}]`
-  ).checked = true;
-  document.querySelector(`input[name="audio"][value=${audio}]`).checked = true;
+  try {
+    document.querySelector(
+      `input[name="visuals"][value=${visuals}]`
+    ).checked = true;
+    document.querySelector(
+      `input[name="audio"][value=${audio}]`
+    ).checked = true;
+  } catch (err) {
+    console.log(err);
+  }
 });
 socket.on("roomInfo", (data) => {
   visuals = data.visuals;
   audio = data.audio;
-  document.querySelector(
-    `input[name="visuals"][value=${visuals}]`
-  ).checked = true;
-  document.querySelector(`input[name="audio"][value=${audio}]`).checked = true;
+  try {
+    document.querySelector(
+      `input[name="visuals"][value=${visuals}]`
+    ).checked = true;
+    document.querySelector(
+      `input[name="audio"][value=${audio}]`
+    ).checked = true;
+  } catch (err) {
+    console.log(err);
+  }
 });
 socket.on("invalidRoom", () => {
   document.getElementsByTagName("body")[0].innerHTML =
