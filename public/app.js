@@ -22,8 +22,7 @@ window.addEventListener("load", () => {
     const visuals = document.querySelector(
       'input[name="visuals"]:checked'
     ).value;
-    const audio = document.querySelector('input[name="visuals"]:checked').value;
-
+    const audio = document.querySelector('input[name="audio"]:checked').value;
     socket.emit("createRoom", { visuals, audio });
   });
 });

@@ -9,8 +9,9 @@ socket.on("connect", () => {
 let visuals = "forest";
 let audio = "base";
 socket.on("roomInfo", (data) => {
-  audio = data.audio;
+  console.log(data);
   visuals = data.visuals;
+  audio = data.audio;
 });
 socket.on("invalidRoom", () => {
   document.getElementsByTagName("body")[0].innerHTML =
@@ -21,12 +22,16 @@ socket.on("role", (role) => {
   console.log(role);
   clientRole = role;
 });
-sounds = [];
+edmSounds = [];
+lofiSounds = [];
 
 function preload() {
   console.log(audio, visuals);
-  for (let i = 0; i < 5; i++) {
-    sounds[i] = loadSound(`assets/sound/normal/${i}.wav`);
+  for (let i = 0; i < 6; i++) {
+    edmSounds[i] = loadSound(`assets/sound/edm/${i}.wav`);
+  }
+  for (let i = 0; i < 6; i++) {
+    lofiSounds[i] = loadSound(`assets/sound/lofi/${i}.wav`);
   }
 }
 function setup() {
@@ -38,6 +43,7 @@ function windowResized() {
 
 let effects = [];
 function draw() {
+  background(0, 0, 0);
   if (visuals == "fire") {
     background(3, 7, 30);
   }
@@ -54,7 +60,6 @@ function draw() {
 socket.on("keyPressed", (data) => {
   switch (data) {
     case 65:
-      console.log(visuals);
       effects.push(new expandingCirle(visuals));
       break;
     case 66:
@@ -79,36 +84,52 @@ socket.on("keyPressed", (data) => {
       effects.push(new smoothTransition(visuals));
       break;
   }
-
-  if (audio == "base") {
+  if (audio == "edm") {
     switch (data) {
       case 65:
-        sounds[0].play();
+        edmSounds[0].play();
         break;
       case 66:
-        sounds[1].play();
+        edmSounds[1].play();
         break;
       case 67:
-        sounds[2].play();
+        edmSounds[2].play();
         break;
       case 68:
-        sounds[3].play();
+        edmSounds[3].play();
         break;
       case 69:
-        sounds[4].play();
+        edmSounds[4].play();
         break;
       case 70:
-        effects.push(new fourPararellLines());
+        edmSounds[5].play();
         break;
-      case 71:
-        effects.push(new dynamicBackgroundChange());
+    }
+  }
+  if (audio == "lofi") {
+    switch (data) {
+      case 65:
+        lofiSounds[0].play();
         break;
-      case 72:
-        effects.push(new smoothTransition());
+      case 66:
+        lofiSounds[1].play();
+        break;
+      case 67:
+        lofiSounds[2].play();
+        break;
+      case 68:
+        lofiSounds[3].play();
+        break;
+      case 69:
+        lofiSounds[4].play();
+        break;
+      case 70:
+        lofiSounds[4].play();
         break;
     }
   }
 });
+
 function keyPressed() {
   if (clientRole == "player") {
     socket.emit("keyPressed", keyCode);
