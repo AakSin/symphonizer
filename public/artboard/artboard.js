@@ -6,12 +6,35 @@ socket.on("connect", () => {
   roomId = roomId.substring(1, roomId.length - 1);
   socket.emit("room", roomId);
 });
-let visuals = "forest";
+
+let visuals = "earth";
 let audio = "base";
+window.addEventListener("load", () => {
+  visualsButtons = document.querySelectorAll('input[name="visuals"]');
+  for (let i = 0; i < visualsButtons.length; i++) {
+    visualsButtons[i].addEventListener("click", (e) => {
+      visuals = e.target.value;
+    });
+  }
+  audioButtons = document.querySelectorAll('input[name="audio"]');
+
+  for (let i = 0; i < audioButtons.length; i++) {
+    audioButtons[i].addEventListener("click", (e) => {
+      audio = e.target.value;
+    });
+  }
+  document.querySelector(
+    `input[name="visuals"][value=${visuals}]`
+  ).checked = true;
+  document.querySelector(`input[name="audio"][value=${audio}]`).checked = true;
+});
 socket.on("roomInfo", (data) => {
-  console.log(data);
   visuals = data.visuals;
   audio = data.audio;
+  document.querySelector(
+    `input[name="visuals"][value=${visuals}]`
+  ).checked = true;
+  document.querySelector(`input[name="audio"][value=${audio}]`).checked = true;
 });
 socket.on("invalidRoom", () => {
   document.getElementsByTagName("body")[0].innerHTML =
@@ -45,10 +68,13 @@ let effects = [];
 function draw() {
   background(0, 0, 0);
   if (visuals == "fire") {
-    background(3, 7, 30);
+    background(122, 1, 3);
   }
-  if (visuals == "forest") {
-    background(216, 243, 220);
+  if (visuals == "earth") {
+    background(107, 112, 92);
+  }
+  if (visuals == "water") {
+    background(2, 62, 138);
   }
   for (let i = effects.length - 1; i >= 0; i--) {
     effects[i].play();
@@ -58,72 +84,113 @@ function draw() {
   }
 }
 socket.on("keyPressed", (data) => {
-  switch (data) {
-    case 65:
-      effects.push(new expandingCirle(visuals));
-      break;
-    case 66:
-      effects.push(new fourCircle(visuals));
-      break;
-    case 67:
-      effects.push(new expandingPolygon(3, visuals));
-      break;
-    case 68:
-      effects.push(new expandingPolygon(4, visuals));
-      break;
-    case 69:
-      effects.push(new expandingPolygon(5, visuals));
-      break;
-    case 70:
-      effects.push(new fourPararellLines());
-      break;
-    case 71:
-      effects.push(new dynamicBackgroundChange());
-      break;
-    case 72:
-      effects.push(new smoothTransition(visuals));
-      break;
+  if (visuals == "fire") {
+    switch (data) {
+      case 81:
+        effects.push(new expandingCirle(visuals));
+        break;
+      case 87:
+        effects.push(new dynamicBackgroundChange());
+        break;
+      case 69:
+        effects.push(new spiral(visuals));
+        break;
+      case 82:
+        effects.push(new expandingPolygon(4, visuals));
+        break;
+      case 84:
+        effects.push(new expandingPolygon(5, visuals));
+        break;
+      case 89:
+        effects.push(new multipleLines(visuals));
+
+        break;
+    }
+  }
+  if (visuals == "earth") {
+    switch (data) {
+      case 81:
+        effects.push(new expandingCirle(visuals));
+        break;
+      case 87:
+        effects.push(new fourPararellLines(visuals));
+        break;
+      case 69:
+        effects.push(new expandingPolygon(3, visuals));
+        break;
+      case 82:
+        effects.push(new expandingPolygon(4, visuals));
+        break;
+      case 84:
+        effects.push(new multipleLines(visuals));
+        break;
+      case 89:
+        effects.push(new fourCircle(visuals));
+        break;
+    }
+  }
+  if (visuals == "water") {
+    switch (data) {
+      case 81:
+        effects.push(new sineWave(visuals));
+        break;
+      case 87:
+        effects.push(new multipleSineWaves(visuals));
+        break;
+      case 69:
+        effects.push(new spiral(visuals));
+        break;
+      case 82:
+        effects.push(new multipleLines(visuals));
+        break;
+      case 84:
+        effects.push(new expandingPolygon(3, visuals));
+        break;
+      case 89:
+        effects.push(new fourCircle(visuals));
+        break;
+    }
   }
   if (audio == "edm") {
     switch (data) {
-      case 65:
+      case 81:
         edmSounds[0].play();
         break;
-      case 66:
+      case 87:
         edmSounds[1].play();
         break;
-      case 67:
+      case 69:
         edmSounds[2].play();
         break;
-      case 68:
+      case 82:
         edmSounds[3].play();
         break;
-      case 69:
+      case 84:
         edmSounds[4].play();
         break;
-      case 70:
+      case 89:
         edmSounds[5].play();
         break;
     }
   }
   if (audio == "lofi") {
     switch (data) {
-      case 65:
+      case 81:
         lofiSounds[0].play();
         break;
-      case 66:
+      case 87:
         lofiSounds[1].play();
         break;
-      case 67:
+      case 69:
         lofiSounds[2].play();
         break;
-      case 68:
+      case 82:
         lofiSounds[3].play();
         break;
-      case 69:
+      case 84:
         lofiSounds[4].play();
         break;
-      case 70:
+      case 89:
         lofiSounds[4].play();
         break;
     }
