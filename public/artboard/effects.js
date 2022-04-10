@@ -120,6 +120,7 @@ class fourCircle {
     } else if (colorPallete == "water") {
       this.color = waterColor[Math.floor(Math.random() * waterColor.length)];
     }
+    this.state = true;
     this.d = random(50, 100);
     this.n = 8;
     this.x = (window.innerWidth - (2 * this.n - 1) * this.d) / 2;
@@ -153,6 +154,7 @@ class fourPararellLines {
     } else if (colorPallete == "water") {
       this.color = waterColor[Math.floor(Math.random() * waterColor.length)];
     }
+    this.state = true;
     this.i = 0;
     this.h = 100;
     this.s = 50;
@@ -186,6 +188,7 @@ class dynamicBackgroundChange {
     this.i = 100;
     this.t = 0;
     this.cnt = 0;
+    this.state = true;
   }
 
   play() {
@@ -212,6 +215,7 @@ class smoothTransition {
     } else if (colorPallete == "water") {
       this.color = waterColor[Math.floor(Math.random() * waterColor.length)];
     }
+    this.state = true;
     this.y = 0;
     this.x = 0;
     this.w = window.innerWidth / 8;
@@ -239,6 +243,7 @@ class expandingPolygon {
     } else if (colorPallete == "water") {
       this.color = waterColor[Math.floor(Math.random() * waterColor.length)];
     }
+    this.state = true;
     this.n = n;
     this.a = random(100, 200);
     this.x = random(50, width - 50);
@@ -283,6 +288,7 @@ class sineWave {
     this.yvalues = new Array(floor(this.w / this.xspacing)); // Using an array to store height values for the wave
     this.cnt = 0;
     this.opacity = 255;
+    this.state = true;
   }
 
   play() {
@@ -336,6 +342,7 @@ class multipleSineWaves {
     this.dx = (TWO_PI / this.period) * this.xspacing; // Value for incrementing x
     this.yvalues = new Array(floor(this.w / this.xspacing)); // Using an array to store height values for the wave
     this.cnt = 0;
+    this.state = true;
   }
 
   play() {
@@ -398,6 +405,7 @@ class spiral {
     this.scalar = 1;
     this.speed = 7;
     this.cnt = 0;
+    this.state = true;
   }
 
   play() {
@@ -423,6 +431,7 @@ class multipleLines {
       this.color = waterColor[Math.floor(Math.random() * waterColor.length)];
     }
     this.opacity = 255;
+    this.state = true;
   }
 
   play() {
