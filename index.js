@@ -16,7 +16,7 @@ let db = new Datastore({
 }); //creates a new one if needed
 db.loadDatabase(); //loads the db with the data
 
-const maxPlayers = 3;
+const maxPlayers = 100;
 
 // sockets --> check for socket connection
 io.sockets.on("connection", (socket) => {
@@ -51,12 +51,16 @@ io.sockets.on("connection", (socket) => {
       }
     });
   });
+  socket.on("changeVisuals", (visuals) => {
+    io.to(roomCode).emit("changeVisuals", visuals);
+  });
+  socket.on("changeAudio", (audio) => {
+    io.to(roomCode).emit("changeAudio", audio);
+  });
   socket.on("keyPressed", (keyCode) => {
     io.to(roomCode).emit("keyPressed", keyCode);
   });
   socket.on("createRoom", (data) => {
-    console.log("hello");
-
     roomInfo = {};
     roomInfo.visuals = data.visuals;
     roomInfo.audio = data.audio;

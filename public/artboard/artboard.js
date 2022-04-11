@@ -14,6 +14,7 @@ window.addEventListener("load", () => {
   for (let i = 0; i < visualsButtons.length; i++) {
     visualsButtons[i].addEventListener("click", (e) => {
       visuals = e.target.value;
+      socket.emit("changeVisuals", e.target.value);
     });
   }
   audioButtons = document.querySelectorAll('input[name="audio"]');
@@ -21,6 +22,7 @@ window.addEventListener("load", () => {
   for (let i = 0; i < audioButtons.length; i++) {
     audioButtons[i].addEventListener("click", (e) => {
       audio = e.target.value;
+      socket.emit("changeAudio", e.target.value);
     });
   }
   try {
@@ -34,6 +36,19 @@ window.addEventListener("load", () => {
     console.log(err);
   }
 });
+socket.on("changeVisuals", (dataVisuals) => {
+  document.querySelector(
+    `input[name="visuals"][value=${dataVisuals}]`
+  ).checked = true;
+  visuals = dataVisuals;
+});
+socket.on("changeAudio", (dataAudio) => {
+  document.querySelector(
+    `input[name="audio"][value=${dataAudio}]`
+  ).checked = true;
+  audio = dataAudio;
+});
+
 socket.on("roomInfo", (data) => {
   visuals = data.visuals;
   audio = data.audio;
@@ -90,9 +105,9 @@ function draw() {
   }
   for (let i = effects.length - 1; i >= 0; i--) {
     effects[i].play();
-    // if (!effects[i].state) {
-    //   effects.splice(i, 1);
-    // }
+    if (!effects[i].state) {
+      effects.splice(i, 1);
+    }
   }
 }
 socket.on("keyPressed", (data) => {
@@ -134,7 +149,7 @@ socket.on("keyPressed", (data) => {
         effects.push(new expandingPolygon(4, visuals));
         break;
       case 84:
-        effects.push(new multipleLines(visuals));
+        effects.push(new smoothTransition(visuals));
         break;
       case 89:
         effects.push(new fourCircle(visuals));

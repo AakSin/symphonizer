@@ -120,7 +120,6 @@ class fourCircle {
     } else if (colorPallete == "water") {
       this.color = waterColor[Math.floor(Math.random() * waterColor.length)];
     }
-    this.state = true;
     this.d = random(50, 100);
     this.n = 8;
     this.x = (window.innerWidth - (2 * this.n - 1) * this.d) / 2;
@@ -128,6 +127,7 @@ class fourCircle {
     this.cnt = 0;
     this.opacity = 250;
     this.time = 1;
+    this.state = true;
   }
   play() {
     if (this.cnt < this.n) {
@@ -141,6 +141,9 @@ class fourCircle {
         this.opacity = this.opacity - 20;
       }
       this.time++;
+      if (this.opacity <= 0) {
+        this.state = false;
+      }
     }
   }
 }
@@ -154,7 +157,6 @@ class fourPararellLines {
     } else if (colorPallete == "water") {
       this.color = waterColor[Math.floor(Math.random() * waterColor.length)];
     }
-    this.state = true;
     this.i = 0;
     this.h = 100;
     this.s = 50;
@@ -167,6 +169,7 @@ class fourPararellLines {
     this.posy =
       (window.innerHeight - this.n * this.h - (this.n - 1) * this.s) / 2;
     this.opacity = 250;
+    this.state = true;
   }
 
   play() {
@@ -180,6 +183,9 @@ class fourPararellLines {
         this.i++;
         this.opacity = this.opacity - 2;
       }
+    }
+    if (this.opacity <= 0) {
+      this.state = false;
     }
   }
 }
@@ -201,6 +207,8 @@ class dynamicBackgroundChange {
         background(220);
         this.t = 0;
       }
+    } else {
+      this.state = false;
     }
     this.cnt++;
   }
@@ -215,12 +223,12 @@ class smoothTransition {
     } else if (colorPallete == "water") {
       this.color = waterColor[Math.floor(Math.random() * waterColor.length)];
     }
-    this.state = true;
     this.y = 0;
     this.x = 0;
     this.w = window.innerWidth / 8;
     this.h = window.innerHeight;
     this.cnt = 0;
+    this.state = true;
   }
 
   play() {
@@ -230,6 +238,9 @@ class smoothTransition {
     this.cnt++;
     if (this.cnt > 20) {
       this.x += 35;
+    }
+    if (this.x > width) {
+      this.state = false;
     }
   }
 }
@@ -260,6 +271,9 @@ class expandingPolygon {
     this.regularPolygon(this.x, this.y, this.n, this.a);
     this.a += 2;
     this.opacity -= 2;
+    if (this.opacity <= 0) {
+      this.state = false;
+    }
   }
   regularPolygon(x, y, n, radius) {
     beginShape();
@@ -296,6 +310,9 @@ class sineWave {
     this.calcWave();
     this.renderWave();
     this.opacity = this.opacity - 3;
+    if (this.opacity <= 0) {
+      this.state = false;
+    }
   }
 
   calcWave() {
@@ -349,7 +366,10 @@ class multipleSineWaves {
     this.calcWave();
     this.renderWave();
     this.cnt++;
-    this.opacity = this.opacity / 1.25;
+    this.opacity -= 5;
+    if (this.opacity <= 0) {
+      this.state = false;
+    }
   }
 
   calcWave() {
@@ -413,8 +433,10 @@ class spiral {
     fill(this.color.r, this.color.g, this.color.b);
     let x = this.offsetx + cos(this.angle) * this.scalar;
     let y = this.offsety + sin(this.angle) * this.scalar;
-    if (this.cnt < 30) {
+    if (this.cnt < 50) {
       ellipse(x, y, 50, 50);
+    } else {
+      this.state = false;
     }
     this.angle += this.speed;
     this.scalar = this.speed + 100;
@@ -445,5 +467,8 @@ class multipleLines {
       );
     }
     this.opacity = this.opacity - 2.5;
+    if (this.opacity <= 0) {
+      this.state = false;
+    }
   }
 }
